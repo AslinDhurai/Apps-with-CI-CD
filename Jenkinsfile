@@ -35,7 +35,8 @@ pipeline {
 
         stage('Run React App') {
             steps {
-                sh 'npm start &'
+                // sh 'npm start &'
+                sh 'npm install -g serve'
             }
         }
     }
