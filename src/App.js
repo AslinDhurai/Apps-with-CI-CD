@@ -10,6 +10,7 @@ function App() {
         <h2>Hello World</h2>
         <p>
           Welcome All Buddies to Buddy Webinar!!!
+          This is Awesome
         </p>
       </header>
     </div>
