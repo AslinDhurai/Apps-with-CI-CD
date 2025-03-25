@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        NODE_OPTIONS = "--openssl-legacy-provider"
+    }
         stages {
             stage('Build') {
                 steps {
@@ -9,7 +12,7 @@ pipeline {
                     sh 'ls'
                     sh 'rm -rf node_modules package-lock.json'
                     sh 'ls'
-                    sh 'export NODE_OPTIONS=--openssl-legacy-provider'
+                    // sh 'export NODE_OPTIONS=--openssl-legacy-provider'
                     sh 'echo $NODE_OPTIONS'
                     sh 'npm install'
                     sh 'npm run build'
