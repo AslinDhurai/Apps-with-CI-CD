@@ -10,8 +10,6 @@ pipeline {
                     sh 'node -v'
                     sh 'npm -v'
                     sh 'ls'
-                    sh 'rm -rf node_modules package-lock.json'
-                    sh 'ls'
                     // sh 'export NODE_OPTIONS=--openssl-legacy-provider'
                     sh 'echo $NODE_OPTIONS'
                     sh 'npm install'
