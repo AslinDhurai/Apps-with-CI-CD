@@ -7,6 +7,8 @@ pipeline {
                     sh 'node -v'
                     sh 'npm -v'
                     sh 'ls'
+                    sh 'rm -rf node_modules"
+                    sh 'ls'
                     sh 'npm install'
                     sh 'npm run build'
 
