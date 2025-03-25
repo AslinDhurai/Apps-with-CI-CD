@@ -15,6 +15,7 @@ pipeline {
                     // sh 'export NODE_OPTIONS=--openssl-legacy-provider'
                     sh 'echo $NODE_OPTIONS'
                     sh 'npm install'
+                    sh 'npm start'
                     sh 'npm run build'
 
                 }
