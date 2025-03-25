@@ -9,6 +9,7 @@ pipeline {
                     sh 'ls'
                     sh 'rm -rf node_modules'
                     sh 'ls'
+                    sh 'export NODE_OPTIONS=--openssl-legacy-provider'
                     sh 'npm install'
                     sh 'npm run build'
 
