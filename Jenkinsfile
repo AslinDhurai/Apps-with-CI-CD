@@ -5,6 +5,7 @@ pipeline {
     
     environment {
         NODE_OPTIONS = "--openssl-legacy-provider"  // Fix potential build issues
+        REACT_APP_PORT = "3000"  // Port for React app
     }
 
     stages {
@@ -35,8 +36,16 @@ pipeline {
 
         stage('Run React App') {
             steps {
-                // sh 'npm start &'
-                sh 'npm install -g serve'
+                script {
+                    // Start React app in the background and ensure it binds to 0.0.0.0
+                    sh 'npm start &'
+                    
+                    // Wait for the app to start (adjust sleep time if necessary)
+                    sleep(time: 30, unit: 'SECONDS')
+                    
+                    // Check if the React app is up (optional)
+                    sh 'curl http://localhost:$REACT_APP_PORT'  // This checks if the app is running
+                }
             }
         }
     }
