@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    
+    tools {nodejs "NodeJS"}
+    
     environment {
         NODE_OPTIONS = "--openssl-legacy-provider"  // Fix potential build issues
     }
