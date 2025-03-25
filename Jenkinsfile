@@ -8,23 +8,41 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'master', 
-                    credentialsId: 'github-id', // Use stored GitHub credentials
-                    url: 'https://github.com/aslindhurai-cs/mine.git'
+                script {
+                    try {
+                        git branch: 'master', 
+                            credentialsId: 'github-id', 
+                            url: 'https://github.com/aslindhurai-cs/mine.git'
+                    } catch (Exception e) {
+                        error "❌ Git Checkout Failed: ${e.message}"
+                    }
+                }
             }
         }
 
         stage('Check Node & npm Version') {
             steps {
-                sh 'node -v'   // Check Node.js version
-                sh 'npm -v'    // Check npm version
+                script {
+                    try {
+                        sh 'node -v'
+                        sh 'npm -v'
+                    } catch (Exception e) {
+                        error "❌ Node.js or npm Not Found: ${e.message}"
+                    }
+                }
             }
         }
 
         stage('Check React & Dependencies') {
             steps {
-                sh 'npx react-scripts --version || echo "React-scripts not found!"'  // Check React version
-                sh 'npm list react || echo "React not installed!"'                   // Verify React is installed
+                script {
+                    try {
+                        sh 'npx react-scripts --version || echo "React-scripts not found!"'
+                        sh 'npm list react || echo "React not installed!"'
+                    } catch (Exception e) {
+                        error "❌ React Check Failed: ${e.message}"
+                    }
+                }
             }
         }
 
@@ -42,7 +60,7 @@ pipeline {
 
         stage('Start React App') {
             steps {
-                sh 'nohup npm start &' // Runs in the background
+                sh 'nohup npm start &'
             }
         }
     }
