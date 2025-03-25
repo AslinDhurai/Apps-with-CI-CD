@@ -5,12 +5,12 @@ pipeline {
         NODE_OPTIONS = "--openssl-legacy-provider"  // Fix potential build issues
     }
 
-    // stages {
-    //     stage('Clone Repository') {
-    //         steps {
-    //             git branch: 'main', credentialsId: 'github-id', url: 'https://github.com/yourusername/your-repo.git'
-    //         }
-    //     }
+    stages {
+        // stage('Clone Repository') {
+        //     steps {
+        //         git branch: 'main', credentialsId: 'github-id', url: 'https://github.com/yourusername/your-repo.git'
+        //     }
+        // }
 
         stage('Check Node.js and npm Versions') {
             steps {
