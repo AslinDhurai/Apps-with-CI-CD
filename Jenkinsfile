@@ -52,7 +52,7 @@ pipeline {
                 script {
                     echo "Running the Spring Boot application..."
                     sh '''
-                        // cd "4. spring-boot-hello-world-example/data"
+                        # cd "4. spring-boot-hello-world-example/data"
                         cd "data"
                         pwd  # Confirm correct directory
                         ls -la  # List files before running the JAR
