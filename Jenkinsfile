@@ -26,7 +26,7 @@ pipeline {
                     sh '''
                         pwd  # Print current directory
                         ls -la  # List files before build
-                        // cd "4. spring-boot-hello-world-example"
+                        # cd "4. spring-boot-hello-world-example"
                         mvn clean package
                         pwd  # Print directory after build
                         ls -la target/  # List files in target folder
@@ -39,7 +39,7 @@ pipeline {
                 script {
                     echo "Moving the generated JAR file to 'data' directory..."
                     sh '''
-                        // cd "4. spring-boot-hello-world-example"
+                        # cd "4. spring-boot-hello-world-example"
                         mkdir -p data  # Create data folder if it doesn't exist
                         mv target/spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar data/
                         ls -la data/  # Verify JAR file is moved
