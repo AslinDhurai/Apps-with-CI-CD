@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        GITHUB_CREDENTIALS = credentials('github-token')  // Use Jenkins credentials
+        GITHUB_CREDENTIALS = credentials('github-id')  // Use Jenkins credentials
     }
     stages {
         stage('Clone Repository') {
@@ -10,7 +10,7 @@ pipeline {
                     checkout([$class: 'GitSCM',
                         branches: [[name: '*/spring']],
                         userRemoteConfigs: [[
-                            url: "https://github.com/Archanaa579/springboot-jenkins-app.git",
+                            url: "https://github.com/aslindhurai-cs/mine.git",
                             credentialsId: "github-id"
                         ]]
                     ])
