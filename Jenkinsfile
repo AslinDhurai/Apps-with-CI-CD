@@ -59,6 +59,7 @@ pipeline {
                         nohup java -jar spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
                         echo $! > app.pid  # Store process ID
                         ls -la  # Verify log and PID file are created
+                        java -jar spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar --server.port=9090
                     '''
                 }
             }
