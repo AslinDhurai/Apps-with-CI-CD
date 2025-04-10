@@ -11,6 +11,7 @@ function App() {
         <p>
           Welcome All Buddies to Buddy Webinar!!!
           This is Awesome Guys
+            How is it going
         </p>
       </header>
     </div>
