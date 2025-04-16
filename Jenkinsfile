@@ -35,9 +35,11 @@ pipeline {
             steps {
                 script {
                     echo "Restarting Windows service hosting Spring Boot app..."
-                    bat '''
-                        powershell.exe -Command "Restart-Service -Name SpringBootAppService"
+                    sh '''
+                    cd /path/to/spring-boot-app
+                    nohup java -jar /mnt/c/jenkins-share/data/spring-boot-application.jar --server.port=9090 > app.log 2>&1 &
                     '''
+
                 }
             }
         }
