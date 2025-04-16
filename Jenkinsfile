@@ -1,58 +1,76 @@
 pipeline {
     agent any
-
     environment {
-        GITHUB_CREDENTIALS = credentials('github-id') // GitHub credentials stored in Jenkins
+        GITHUB_CREDENTIALS = credentials('github-id')  // Use Jenkins credentials
     }
-
     stages {
+        // stage('Clone Repository') {
+        //     steps {
+        //         script {
+        //             checkout([$class: 'GitSCM',
+        //                 branches: [[name: '*/spring']],
+        //                 userRemoteConfigs: [[
+        //                     url: "https://github.com/aslindhurai-cs/mine.git",
+        //                     credentialsId: "github-id"
+        //                 ]]
+        //             ])
+        //             sh 'pwd'  // Print current directory
+        //             sh 'ls -la'  // List files to confirm repo is cloned
+        //         }
+        //     }
+        // }
         stage('Build Application') {
             steps {
                 script {
                     echo "Building the Spring Boot application..."
                     sh '''
+                        pwd  # Print current directory
+                        ls -la  # List files before build
+                        # cd "4. spring-boot-hello-world-example"
                         mvn clean package
-                        ls -la target/
+                        pwd  # Print directory after build
+                        ls -la target/  # List files in target folder
                     '''
                 }
             }
         }
-
-        stage('Move JAR to Shared Directory') {
+        stage('Move JAR to Data Directory') {
             steps {
                 script {
-                    echo "Moving the JAR file to shared directory for Windows access..."
+                    echo "Moving the generated JAR file to 'data' directory..."
                     sh '''
-                        mkdir -p /mnt/c/jenkins-share/data
-                        cp target/*.jar /mnt/c/jenkins-share/data/
-                        ls -la /mnt/c/jenkins-share/data/
+                        # cd "4. spring-boot-hello-world-example"
+                        mkdir -p data  # Create data folder if it doesn't exist
+                        mv target/spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar data/
+                        ls -la data/  # Verify JAR file is moved
                     '''
                 }
             }
         }
-
-        stage('Restart Windows Service') {
+        stage('Run Application') {
             steps {
                 script {
-                    echo "Restarting Windows service hosting Spring Boot app..."
+                    echo "Running the Spring Boot application..."
                     sh '''
-                    cd /mnt/c/jenkins-share/data/
-                    java -version
-
-                    java -jar /mnt/c/jenkins-share/data/spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar --server.port=9090 > app.log 2>&1 &
+                        # cd "4. spring-boot-hello-world-example/data"
+                        cd "data"
+                        pwd  # Confirm correct directory
+                       # ls -la  # List files before running the JAR
+                       # nohup java -jar spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+                       # echo $! > app.pid  # Store process ID
+                        ls -la  # Verify log and PID file are created
+                        java -jar spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar --server.port=9090
                     '''
-
                 }
             }
         }
     }
-
     post {
         success {
-            echo "Deployment complete. Application is running and reverse proxied by IIS."
+            echo "Application started successfully!"
         }
         failure {
-            echo "Pipeline failed. Please check logs."
+            echo "Build or execution failed!"
         }
     }
 }
