@@ -37,7 +37,7 @@ pipeline {
                     echo "Restarting Windows service hosting Spring Boot app..."
                     sh '''
                     cd /mnt/c/jenkins-share/data/
-                    nohup java -jar /mnt/c/jenkins-share/data/spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar --server.port=9090 > app.log 2>&1 &
+                    java -jar /mnt/c/jenkins-share/data/spring-boot-hello-world-example-0.0.1-SNAPSHOT.jar --server.port=9090 > app.log 2>&1 &
                     '''
 
                 }
