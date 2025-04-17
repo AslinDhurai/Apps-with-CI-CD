@@ -39,7 +39,7 @@ pipeline {
                     cd /mnt/c/jenkins-share/data/
                     java -version
 
-                    sudo sh /home/poc-user/start-spring.sh
+                    sudo /home/poc-user/start-spring.sh
                     '''
 
                 }
