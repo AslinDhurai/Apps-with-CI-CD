@@ -1,50 +1,38 @@
 pipeline {
     agent any
-    
-    tools {nodejs "NodeJS"}
-    
+
     environment {
-        NODE_OPTIONS = "--openssl-legacy-provider"  // Fix potential build issues
-        REACT_APP_PORT = "3000"  // Port for React app
+        GITHUB_CREDENTIALS = credentials('github-id') // GitHub credentials stored in Jenkins
+        NODE_OPTIONS = "--openssl-legacy-provider"    // Fix OpenSSL issues in some Node.js versions
     }
 
     stages {
-        // stage('Clone Repository') {
-        //     steps {
-        //         git branch: 'main', credentialsId: 'github-id', url: 'https://github.com/yourusername/your-repo.git'
-        //     }
-        // }
-
-        stage('Check Node.js and npm Versions') {
-            steps {
-                sh 'node -v'
-                sh 'npm -v'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
         stage('Build React App') {
             steps {
-                sh 'npm run build'
+                script {
+                    echo "Installing dependencies and building React app..."
+                    sh '''
+                        npm install
+                        rm -rf build/
+                        npm run build
+                        ls -la build/
+                    '''
+                }
             }
         }
 
-        stage('Run React App') {
+        stage('Deploy to Shared Directory') {
             steps {
                 script {
-                    // Start React app in the background and ensure it binds to 0.0.0.0
-                    sh 'npm start&'
-                    
-                    // Wait for the app to start (adjust sleep time if necessary)
-                    sleep(time: 30, unit: 'SECONDS')
-                    
-                    // Check if the React app is up (optional)
-                    // sh 'curl http://localhost:$REACT_APP_PORT'  // This checks if the app is running
+                    echo "Copying React build files to /mnt/c/jenkins-share/react-build..."
+                    sh '''
+                        TARGET_DIR=/mnt/c/jenkins-share/react-build
+
+                        mkdir -p $TARGET_DIR
+                        rm -rf $TARGET_DIR/*
+                        cp -r build/* $TARGET_DIR/
+                        ls -la $TARGET_DIR
+                    '''
                 }
             }
         }
@@ -52,10 +40,10 @@ pipeline {
 
     post {
         success {
-            echo 'React app successfully deployed!'
+            echo "✅ React app built and deployed to /mnt/c/jenkins-share/react-build!"
         }
         failure {
-            echo 'Build failed. Please check logs!'
+            echo "❌ Pipeline failed. Check logs for details."
         }
     }
 }
