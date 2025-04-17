@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    tools {nodejs "NodeJS"}
     environment {
         GITHUB_CREDENTIALS = credentials('github-id') // GitHub credentials stored in Jenkins
         NODE_OPTIONS = "--openssl-legacy-provider"    // Fix OpenSSL issues in some Node.js versions
